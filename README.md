@@ -6,6 +6,6 @@
 
 ### Установка
 
-Клонируйте репозиторий: git clone 
+Клонируйте репозиторий: git clone git@github.com:TuverOn/Course_Work_Bank_App.git
 
 Установка зависимостей pyproject.toml
