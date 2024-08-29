@@ -13,18 +13,14 @@ logger.addHandler(file_handler)
 logger.setLevel(logging.INFO)
 
 
-def investment_bank(
-    month: str, transactions: List[Dict[str, Any]], limit: int
-) -> str:
+def investment_bank(month: str, transactions: List[Dict[str, Any]], limit: int) -> str:
     """Рассчитывает сумму на счету инвесткопилки по заданному порогу округления"""
     logger.info("Start")
     period = datetime.datetime.strptime(month, "%Y-%m")
     logger.info("Creating filtered transactions list")
     transactions_list = []
     investment_bank_sum = 0
-    logger.info(
-        "Filtering transactions by date and putting their sum into filtered transactions list"
-    )
+    logger.info("Filtering transactions by date and putting their sum into filtered transactions list")
     for transaction in transactions:
         transaction_date = transaction["operation_date"]
         payment_date = datetime.datetime.strptime(transaction_date, "%d.%m.%Y %H:%M:%S")

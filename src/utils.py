@@ -79,19 +79,13 @@ def get_card_number_list(transactions: List[Dict[Any, Any]]) -> list:
     return card_list_short
 
 
-def get_operations_sum(
-    time_data: str, transactions: List[Dict[str, Any]], card_number: str
-) -> float:
+def get_operations_sum(time_data: str, transactions: List[Dict[str, Any]], card_number: str) -> float:
     """Выводит общую сумму расходов по номеру карты в формате *1234"""
     month = time_data[5:7] + "." + time_data[:4]
     transactions_sum_list = []
     for transaction in transactions:
         date = str(transaction["payment_date"])
-        if (
-            transaction["card_number"] == card_number
-            and date[3:] == month
-            and transaction["payment_sum"] < 0
-        ):
+        if transaction["card_number"] == card_number and date[3:] == month and transaction["payment_sum"] < 0:
             transactions_sum_list.append(transaction["payment_sum"])
     total_operations_sum = abs(sum(transactions_sum_list))
     return total_operations_sum
@@ -109,17 +103,16 @@ def show_cards(time_data: str, transactions: List[Dict[Any, Any]]) -> List[Dict]
     cards_list = get_card_number_list(transactions)
     for card in cards_list:
         total_spent = get_operations_sum(time_data, transactions, card)
-        card_dict = {}
-        card_dict["last_digits"] = card[1:]
-        card_dict["total_spent"] = get_operations_sum(time_data, transactions, card)
-        card_dict["cashback"] = get_cashback_sum(total_spent)
+        card_dict = {
+            "last_digits": card[1:],
+            "total_spent": get_operations_sum(time_data, transactions, card),
+            "cashback": get_cashback_sum(total_spent),
+        }
         show_cards_list.append(card_dict)
     return show_cards_list
 
 
-def show_top_5_transactions(
-    time_data: str, transactions: List[Dict[str, Any]]
-) -> List[Dict[str, Any]]:
+def show_top_5_transactions(time_data: str, transactions: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """Выводит информацию о 5 топ транзакциях по сумме платежа"""
     for transaction in transactions:
         neg_sum = transaction["payment_sum"]
@@ -139,11 +132,12 @@ def show_top_5_transactions(
     top_5_transactions = []
     for transaction in sorted_transactions:
         if list_index < 6:
-            top_transaction_dict = {}
-            top_transaction_dict["date"] = transaction["payment_date"]
-            top_transaction_dict["amount"] = transaction["payment_sum"]
-            top_transaction_dict["category"] = transaction["category"]
-            top_transaction_dict["description"] = transaction["description"]
+            top_transaction_dict = {
+                "date": transaction["payment_date"],
+                "amount": transaction["payment_sum"],
+                "category": transaction["category"],
+                "description": transaction["description"],
+            }
             top_5_transactions.append(top_transaction_dict)
             list_index += 1
     return top_5_transactions

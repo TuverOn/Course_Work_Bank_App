@@ -51,9 +51,7 @@ def filtering_by_date(operations_df: pd.DataFrame, date: str) -> pd.DataFrame:
     end_date = current_date - timedelta(days=90)
     logger.info("Filtering operations within 3 months period")
     for operation in operations:
-        payment_date = datetime.datetime.strptime(
-            str(operation["Дата операции"]), "%d.%m.%Y %H:%M:%S"
-        )
+        payment_date = datetime.datetime.strptime(str(operation["Дата операции"]), "%d.%m.%Y %H:%M:%S")
         if end_date < payment_date < current_date:
             filtered_operations.append(operation)
     logger.info("Converting data back to DF")
@@ -63,14 +61,10 @@ def filtering_by_date(operations_df: pd.DataFrame, date: str) -> pd.DataFrame:
 
 
 @decorator_spending_by_cat
-def spending_by_category(
-    transactions: pd.DataFrame, category: str, date: str
-) -> pd.DataFrame:
+def spending_by_category(transactions: pd.DataFrame, category: str, date: str) -> pd.DataFrame:
     """Возвращает DataFrame по заданной категории за 3 месяца от указанной даты"""
     logger.info("Start")
-    logger.info(
-        "Creating filtered list by date for last 3 months with another function"
-    )
+    logger.info("Creating filtered list by date for last 3 months with another function")
     transactions_filtered_by_3_months = filtering_by_date(transactions, date)
     logger.info("Filtering transactions by category")
     category_transcations = transactions_filtered_by_3_months[
